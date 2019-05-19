@@ -70,11 +70,14 @@
   @import "../common/style.css"
 
   .clearFix   //清除浮动
+    display: inline-block
     &.after
+      display: block
       content '.'
       height: 0;
       line-height: 0;
       clear: both
+      visibility hidden
 
   .header
     position: relative
@@ -198,14 +201,15 @@
       z-index: 100;
       overflow auto  //滑动
       .detail-wrapper
+        width: 100%
         min-height: 100%
         .detail-main
-          margin-top: 64px
+          margin-top 64px
           padding-bottom 64px
           .detail-name
             text-align center
             line-height 16px
-            height: 16px
+            font-size: 16px
             font-weight: 700px
       .detail-close
         position: relative
