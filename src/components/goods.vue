@@ -1,8 +1,9 @@
 <template>
     <div class="goods">
+
       <div class="menu-wrapper" ref="menuWrapper">
         <ul class="menu">
-          <li class="menu-item" v-for="(item, index) in goods" :class="{'currentItem': index===currentIndex}" @click="selectedMenu(index, $event)">
+          <li class="menu-item" v-for="(item, index) in goods" :class="{'currentItem': index===currentIndex}" @click="selectedMenu(index, $event)" :key="index">
             <span class="text border-1px">
               <span v-show="item.type >= 0" class="icon" :class="classMap[item.type]"></span>
               {{item.name}}
@@ -12,10 +13,10 @@
       </div>
       <div class="foods-wrapper" ref="foodsWrapper">
         <ul class="food">
-          <li v-for="item in goods" class="food-list food-list-hook" >
+          <li v-for="(item, index) in goods" class="food-list food-list-hook" :key="index">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" class="food-item border-1px">
+              <li v-for="(food, index) in item.foods" class="food-item border-1px" :key="index"  @click="selectFood(food, $event)">
                 <div class="icon">
                   <img :src="food.icon" class="food-img" @load="loadImg($event)">
                 </div>
@@ -30,7 +31,7 @@
                     <span class="now">￥{{food.price}}</span>
                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                     <div class="cart-wrapper">
-                      <cart-control :food="food" ></cart-control>
+                      <cart-control :food="food" @add-event="addEvent"></cart-control>
                     </div>
                   </div>
 
@@ -40,7 +41,13 @@
           </li>
         </ul>
       </div>
-      <shop-cart :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice" :selectedFoods="selectedFoods"></shop-cart>
+
+      <shop-cart :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice" :selectedFoods="selectedFoods" ref="shopCart"></shop-cart>
+      <transition name="detail">
+        <food :selectedFood="selectedFood" ref="detailFood" @add-event="addEvent"></food>
+        <!-- <div class="test" v-show="test"></div> -->
+      </transition>
+      <!-- <food :selectedFood="selectedFood" ref="detailFood" v-show="detailFlag"></food> -->
     </div>
 </template>
 
@@ -49,6 +56,7 @@
   import BScroll from 'better-scroll'
   import ShopCart from 'components/shopCart'
   import cartControl from 'components/cartControl'
+  import food from 'components/food/food'
 
   export default {
     created() {
@@ -86,7 +94,9 @@
         dataCurrent: false,
         mounted: false,
         loadNum: 0,
-        imgCount: 0
+        imgCount: 0,
+        selectedFood: {},
+        detailFlag: false
       }
     },
     computed: {
@@ -94,7 +104,7 @@
         let foods = [];
         this.goods.forEach(good => {
           good.foods.forEach(food => {
-            if (food.count) {
+            if (food.count > 0) {
               foods.push(food);
             }
           })
@@ -133,10 +143,20 @@
 
 
       },
+      selectFood(food, event) {
+        // if (event)
+        // event.stopP
+        this.selectedFood = food;
+        this.$refs.detailFood.show();
+        // this.detailFlag = true;
+      },
       selectedMenu(index, event) {
 //        console.log(index);
         let el = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')[index];
         this.foodsScroll.scrollToElement(el, 300);
+      },
+      addEvent(el) {
+        this.$refs.shopCart.drop(el);
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true});
@@ -169,7 +189,8 @@
     },
     components: {
       "shop-cart": ShopCart,
-      'cart-control': cartControl
+      'cart-control': cartControl,
+      food
     }
   }
 </script>
@@ -197,7 +218,7 @@
       .menu
         .currentItem
           position: relative;
-          z-index 10
+          /*z-index 10*/
           margin-top -1px
           font-weight: 700;
           background: #fff
@@ -302,8 +323,21 @@
               font-weight normal
               vertical-align top
               height 24px;
+
+
+
       /*.food-item*/
         /*&:last-child*/
           /*.price*/
             /*bottom 0;*/
+    .detail-enter-active, .detail-leave-active
+        transition: all .3s linear;
+    .detail-enter, .detail-leave-to
+        transform translate3D(100%, 0, 0)
+    .btn-move-enter-active, .btn-move-leave-active
+      transition all 0.5s linear
+    .btn-move-enter, .btn-move-leave-to
+      opacity 0;
+      transform translate3D(24px, 0, 0) rotateY(180deg)
+
 </style>

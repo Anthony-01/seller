@@ -1,13 +1,13 @@
 <template>
-    <div>
-      <my-head :seller="seller"></my-head>
-      <div class="top border-lpx">
-        <router-link to="/goods" class="route-item">商品</router-link>
-        <router-link to="/router_1" class="route-item">评论</router-link>
-        <router-link to="/router_2" class="route-item">商家</router-link>
-      </div>
-      <router-view :seller="seller"></router-view>
+  <div>
+    <my-head :seller="seller"></my-head>
+    <div class="top border-lpx">
+      <router-link to="/goods" class="route-item" >商品</router-link>
+      <router-link to="/router_1" class="route-item">评论</router-link>
+      <router-link to="/router_2" class="route-item">商家</router-link>
     </div>
+    <router-view :seller="seller"></router-view>
+  </div>
 </template>
 
 <script>
@@ -16,8 +16,9 @@
   import ShopCart from 'components/shopCart.vue'
 
   import header from 'components/header';
+
   export default {
-    created () {
+    created() {
       this.$http.get('/api/seller').then((data) => {
         this.seller = data.body.data;
       })
@@ -46,9 +47,14 @@
     height 40px;
     line-height 40px;
     margin 0
-
+    align-items center
     border-1px(rgba(7, 17, 27, 0.1))
     .route-item
-      text-decoration:none
+      text-decoration: none
+      color: rgb(77, 85, 93);
+      font-size 14px;
+      line-height 14px
+      &:hover
+        color: rgb(240, 20, 20)
 
 </style>

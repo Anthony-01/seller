@@ -1,11 +1,13 @@
 <template>
     <div class="cart-control">
       <transition name="btn-move">
-        <div class="btn-decrease icon-remove_circle_outline" v-show="food.count > 0" @click="decreaseCart"></div>
+        <div class="btn-decrease icon-remove_circle_outline" v-show="food.count > 0" @click="decreaseCart($event)"></div>
       </transition>
       <div class="cart-count" v-show="food.count > 0">{{food.count}}</div>
-      <div class="btn-add icon-add_circle" @click="addCart"></div>
+      <div class="btn-add icon-add_circle" @click="addCart($event)"></div>
+
     </div>
+
 </template>
 
 <script>
@@ -21,19 +23,28 @@
     },
     data() {
       return {
+
       }
     },
     methods: {
-      addCart() {
+      addCart(event) {
+        event.stopPropagation();
         if (!this.food.count) {
           Vue.set(this.food, "count", 1);
         } else {
           this.food.count++
         }
+        console.log(event);
         console.log(this.food.count);
+        //触发动画
+        this.$emit('add-event', event.target);
       },
-      decreaseCart() {
-        this.food.count--;
+      decreaseCart(event) {
+        event.stopPropagation();
+        if (this.food.count > 0) {
+          this.food.count--;
+          console.log(this.food.count);
+        }
       }
     }
   }
@@ -65,5 +76,6 @@
       color: rgb(147, 153, 159)
     .btn-add
       color: rgb(0, 160, 220);
+
 
 </style>

@@ -1,21 +1,32 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import VueRouter from 'vue-router';
-import App from './App.vue';
-import VueResource from 'vue-resource';
+import VueRouter from 'vue-router'
+import App from './App.vue'
+import VueResource from 'vue-resource'
+import Vuex from 'vuex'
 import 'common/styl/index.styl'
-Vue.use(VueResource);
+import good from 'components/goods.vue'
+import router_1 from 'components/router/router_1.vue'
+import router_2 from 'components/router/router_2.vue'
+Vue.use(VueResource)
 
 //安装插件
-Vue.use(VueRouter);
+Vue.use(VueRouter)
+Vue.use(Vuex)
 
-Vue.config.productionTip = false;
+Vue.use(Vuex);
+const state={//要设置的全局访问的state对象
+  showFooter: true,
+  changableNum:0
+  //要设置的初始属性值
+};
+const store = new Vuex.Store({
+  state
+});
 
+Vue.config.productionTip = false
 
-import good from 'components/goods.vue';
-import router_1 from 'components/router/router_1.vue';
-import router_2 from 'components/router/router_2.vue';
 
 let routes = [
   {path: '/', redirect: 'goods'},
@@ -27,40 +38,14 @@ let routes = [
 let router = new VueRouter({
   routes
 });
-//router,
 let app = new Vue({
   el: '#app',
   router,
+  store,
   components: {App},
   template: '<app/>',
   data: {
 
   }
 });
-
-
-
-
-/* eslint-disable no-new */
-// Vue.directive('focus', {
-//   // 当被绑定的元素插入到 DOM 中时……
-//   inserted: function (el) {
-//     // 聚焦元素
-//     el.focus()
-//   }
-// })
-// new Vue({
-//   el: '#app',
-//   router,
-//   components: { TodoList },
-//   template: '<TodoList/>',
-//   data: {
-//     message: '页面加载于 ' + new Date().toLocaleString(),
-//     todos: [
-//       { text: '学习 JavaScript' },
-//       { text: '学习 Vue' },
-//       { text: '整个牛项目' }
-//     ]
-//   }
-// })
 
