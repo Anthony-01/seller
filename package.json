@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "better-scroll": "^1.15.2",
+    "cube-ui": "^1.12.1",
     "express": "^4.16.4",
     "postcss": "^7.0.16",
     "style-loader": "^0.23.1",
