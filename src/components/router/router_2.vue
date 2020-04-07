@@ -11,6 +11,15 @@
     },
     created () {
 
+    },
+    methods: {
+      async getGoods() {
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve()
+          }, 1000)
+        })
+      }
     }
   }
 </script>

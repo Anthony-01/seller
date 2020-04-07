@@ -57,25 +57,28 @@
   import ShopCart from 'components/shopCart'
   import cartControl from 'components/cartControl'
   import food from 'components/food/food'
+  import {getGoods} from "../model/api";
 
   export default {
     created() {
       this.classMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
-      this.$http.get('/api/goods').then((res) => {
-        let info = res.body;
-        if (info.errno == ERR_OK) {
-
-          this.goods = info.data;
-          this.dataCurrent = true;
-
-//           this.$nextTick(() => {
-//             //dom更新后再获取
-//             this._calculate();
-//           });
-
-
-        }
-      })
+//       getGoods().then((res) => {
+//         // let info = res.body;
+//         if (res.errno === ERR_OK) {
+//
+//           this.goods = res.data;
+//           this.dataCurrent = true;
+//
+// //           this.$nextTick(() => {
+// //             //dom更新后再获取
+// //             this._calculate();
+// //           });
+//
+//
+//         }
+//       }).catch(err => {
+//         console.log(err);
+//       })
     },
     mounted() {
       this.mounted = true;
@@ -125,7 +128,10 @@
     },
     props: {
       seller: {
-        type: Object
+        type: Object,
+        default() {
+          return {}
+        }
       }
     },
     methods: {
@@ -185,6 +191,22 @@
       },
       getCurrentHeight() {
 
+      },
+      async getGoods() {
+        try {
+          // 防止在点击tab切换的时候返回重新请求数据(只请求一次就行)
+          if (!this.fetched) {
+            this.fetched = true
+            let res = await getGoods({
+              id: this.seller.id
+            })
+            if (res.errno === 0) {
+              this.goods = res.data
+            }
+          }
+        } catch (error) {
+
+        }
       }
     },
     components: {

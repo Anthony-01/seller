@@ -1,19 +1,24 @@
 <template>
   <div>
     <my-head :seller="seller"></my-head>
-    <div class="top border-lpx">
-      <router-link to="/goods" class="route-item" >商品</router-link>
-      <router-link to="/ratings" class="route-item">评论</router-link>
-      <router-link to="/router_2" class="route-item">商家</router-link>
-    </div>
-    <router-view :seller="seller"></router-view>
+<!--    <div class="top border-lpx">-->
+<!--      <router-link to="/goods" class="route-item" >商品</router-link>-->
+<!--      <router-link to="/ratings" class="route-item">评论</router-link>-->
+<!--      <router-link to="/router_2" class="route-item">商家</router-link>-->
+<!--    </div>-->
+<!--    <router-view :seller="seller"></router-view>-->
+    <tab :tabs="tabs"></tab>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue';
-  import VueRouter from 'vue-router';
-  import ShopCart from 'components/shopCart.vue'
+  // import Vue from 'vue';
+  // import VueRouter from 'vue-router';
+  // import ShopCart from 'components/shopCart.vue'
+  import tab from "./components/tab/tab";
+  import goods from "./components/goods";
+  import ratings from "./components/ratings/ratings";
+  import sellers from './components/router/router_2';
 
   import header from 'components/header';
 
@@ -23,6 +28,17 @@
         this.seller = data.body.data;
       })
     },
+    computed: {
+      tabs() {
+        return [{
+          label: '商品', component: goods, data: { seller: this.seller }
+        }, {
+          label: '评分', component: ratings, data: { seller: this.seller }
+        }, {
+          label: '商家', component: sellers, data: { seller: this.seller }
+        }]
+      }
+    },
     data() {
       return {
         seller: {}
@@ -30,7 +46,7 @@
     },
     components: {
       "my-head": header,
-      "shop-cart": ShopCart
+      tab
     }
   }
 </script>

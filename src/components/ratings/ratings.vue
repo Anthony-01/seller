@@ -25,6 +25,17 @@
               </div>
           </div>
           <split></split>
+          <!--:selectType="selectType" :onlyContent="onlyContent"-->
+          <ratingselect :ratings="ratings"  :selectType="selectType" :onlyContent="onlyContent" @select="onSelect" @toggle="onToggle"></ratingselect>
+          <div class="rating-wrapper" v-show="computedRatings.length">
+              <ul>
+                  <li class="rating-item border-bottom-1px" v-for="(item, index) in computedRatings">
+                      <div class="avatar">
+                        <img :src="item.avatar" width="28" height="28">
+                      </div>
+                  </li>
+              </ul>
+          </div>
       </div>
   </div>
 </template>
@@ -32,17 +43,48 @@
 <script>
   import Star from "../star";
   import split from "../split/split";
-
+  import ratingselect from "../ratingselect/ratingselect";
+  import ratingMixin from '../../common/mixins/ratings'
+  import {getGoods} from "../../model/api";
     export default {
         name: "ratings",
+        mixins: [ratingMixin],
+        data() {
+            return {
+              ratings: []
+            }
+        },
         props: {
             seller: {
-                type: Object
+                type: Object,
+                default() {
+                  return {}
+                }
             }
+        },
+        computed: {},
+        methods: {
+          async getGoods() {
+            try {
+              // 防止在点击tab切换的时候返回重新请求数据(只请求一次就行)
+              if (!this.fetched) {
+                this.fetched = true
+                let res = await getGoods({
+                  id: this.seller.id
+                })
+                if (res.errno === 0) {
+                  this.goods = res.data
+                }
+              }
+            } catch (error) {
+
+            }
+          }
         },
         components: {
           Star,
-          split
+          split,
+          ratingselect
         }
     }
 </script>

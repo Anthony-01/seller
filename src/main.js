@@ -10,6 +10,8 @@ import good from 'components/goods.vue'
 import router_1 from 'components/router/router_1.vue'
 import router_2 from 'components/router/router_2.vue'
 import router from "./router";
+import './cube-ui'
+import './common/styl/index.styl'
 Vue.use(VueResource)
 
 //安装插件
