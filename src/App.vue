@@ -20,10 +20,15 @@
   import ratings from "./components/ratings/ratings";
   import sellers from './components/router/router_2';
 
+  import {getSeller} from "./model/api";
+  import qs from 'query-string';
+
   import header from 'components/header';
 
   export default {
     created() {
+      console.log(location.search);
+      console.log(qs.parse(location.search).id);
       this.$http.get('/api/seller').then((data) => {
         this.seller = data.body.data;
       })
@@ -31,17 +36,37 @@
     computed: {
       tabs() {
         return [{
-          label: '商品', component: goods, data: { seller: this.seller }
+          label: '商品', component: goods, data: { seller: this.seller }, id: 1
         }, {
-          label: '评分', component: ratings, data: { seller: this.seller }
+          label: '评分', component: ratings, data: { seller: this.seller, id: 2 }
         }, {
-          label: '商家', component: sellers, data: { seller: this.seller }
+          label: '商家', component: sellers, data: { seller: this.seller, id: 3 }
         }]
+      }
+    },
+    methods: {
+      async _getSeller() {
+        try {
+          let res = await getSeller({
+            id: this.seller.id
+          });
+          // 成功响应 reslove
+          if (res.errno === 0) {
+            this.seller = Object.assign({}, this.seller, res.data)
+          }
+        } catch (error) {
+          // 失败响应reject
+          console.log(error)
+        } finally {
+
+        }
       }
     },
     data() {
       return {
-        seller: {}
+        seller: {
+          id: qs.parse(location.search).id
+        }
       }
     },
     components: {

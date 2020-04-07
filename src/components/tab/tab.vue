@@ -3,8 +3,8 @@
         <cube-tab-bar show-slider v-model="selectedLabel" :data="tabs" :useTransition="false" ref="tabbar"></cube-tab-bar>
         <div class="slide-wrapper">
             <cube-slide ref="slide" :data="tabs" :initial-index="index" :show-dots="false" @change="changePage" :loop="false" :auto-play="false" :options="slideOptions" @scroll="scroll">
-                <cube-slide-item v-for="(tab, index) in tabs" :key="index">
-                    <component :is="tab.component" :data="tab.data" ref="component"></component>
+                <cube-slide-item v-for="(tab, indexItem) in tabs" :key="tab.id">
+                    <component :is="tab.component" :data="tab.data" ref="component" v-show="index === indexItem"></component>
                 </cube-slide-item>
             </cube-slide>
         </div>
@@ -17,13 +17,13 @@
     export default {
         name: "tab",
         mounted() {
-
+          this.changePage(this.index)
         },
         props: {
             tabs: {
                 type: Array,
                 default() {
-                    return []
+                    return {}
                 }
             },
             initialIndex: {
@@ -34,11 +34,10 @@
         computed: {
             selectedLabel: {
                 set(newValue) {
-                    let res = 0;
-                    res = this.tabs.findIndex(item => {
+                    this.index = this.tabs.findIndex(item => {
                         return item.label === newValue;
                     });
-                    return res;
+                    // return res;
                 },
                 get() {
                     return this.tabs[this.index].label

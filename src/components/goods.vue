@@ -62,23 +62,24 @@
   export default {
     created() {
       this.classMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
-//       getGoods().then((res) => {
-//         // let info = res.body;
-//         if (res.errno === ERR_OK) {
-//
-//           this.goods = res.data;
-//           this.dataCurrent = true;
-//
-// //           this.$nextTick(() => {
-// //             //dom更新后再获取
-// //             this._calculate();
-// //           });
-//
-//
-//         }
-//       }).catch(err => {
-//         console.log(err);
-//       })
+      getGoods().then((res) => {
+        // let info = res.body;
+        if (res.errno === ERR_OK) {
+
+          this.goods = res.data;
+
+          this.dataCurrent = true;
+
+//           this.$nextTick(() => {
+//             //dom更新后再获取
+//             this._calculate();
+//           });
+
+
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     },
     mounted() {
       this.mounted = true;

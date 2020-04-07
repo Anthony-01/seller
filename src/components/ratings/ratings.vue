@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings">
+  <cube-scroll ref="scroll" class="ratings" :options="scrollOptions" :data="ratings">
       <div class="ratings-content">
           <div class="overview">
               <div class="overview-left">
@@ -37,7 +37,7 @@
               </ul>
           </div>
       </div>
-  </div>
+  </cube-scroll>
 </template>
 
 <script>
@@ -51,7 +51,11 @@
         mixins: [ratingMixin],
         data() {
             return {
-              ratings: []
+              ratings: [],
+              scrollOptions: {
+                click: false,
+                directionLockThreshold: 0
+              }
             }
         },
         props: {
