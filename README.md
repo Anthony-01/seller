@@ -1,6 +1,6 @@
-# vue_demo2
+# vue模仿饿了么前端
 
-> A Vue.js project
+> 基于vue.js的前端实战项目
 
 ## Build Setup
 

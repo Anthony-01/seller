@@ -34,6 +34,18 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           data: appData.seller
         })
       });
+      exe.get('/api/goods', function(req, res) {
+        res.json({
+          errno: 0,
+          data: appData.goods
+        })
+      })
+      exe.get('/ratings', function (req, res) {
+        res.json({
+          errno: 0,
+          data: appData.ratings
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {
