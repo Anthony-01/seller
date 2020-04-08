@@ -25,7 +25,7 @@
                 <cartcontrol :food="selectedFood" @add-event="addEvent"></cartcontrol>
               </div>
               <transition name="buy-fade">
-                <div class="buy" v-show="!selectedFood.count || selectedFood.count == 0" @click="_addFood">加入购物车</div>
+                <div class="buy" v-show="!selectedFood.count || selectedFood.count === 0" @click="_addFood">加入购物车</div>
               </transition>
             </div>
             <split v-show="selectedFood.info"></split>
@@ -68,6 +68,7 @@
   import Vue from "vue";
   import split from 'components/split/split';
   import ratingselect from 'components/ratingselect/ratingselect';
+  const ADD_EVENT = "add-event"
 
   export default {
       data() {
@@ -117,7 +118,7 @@
             this.addEvent(event.target);
           },
           addEvent(event) {
-            this.$emit('add-event', event);
+            this.$emit(ADD_EVENT, event);
           },
           ratingSelect(event) {
             console.log(event);

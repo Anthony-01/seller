@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder');
 const express = require('express');
-const appData = require('../data.json');
+const appData = require('../data1.json');
 const exe = express();
 const apiRoutes = express.Router();
 exe.use('/api', apiRoutes);

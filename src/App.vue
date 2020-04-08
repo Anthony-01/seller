@@ -7,7 +7,9 @@
 <!--      <router-link to="/router_2" class="route-item">商家</router-link>-->
 <!--    </div>-->
 <!--    <router-view :seller="seller"></router-view>-->
-    <tab :tabs="tabs"></tab>
+    <div class="tab-wrapper">
+      <tab :tabs="tabs"></tab>
+    </div>
   </div>
 </template>
 
@@ -15,10 +17,10 @@
   // import Vue from 'vue';
   // import VueRouter from 'vue-router';
   // import ShopCart from 'components/shopCart.vue'
-  import tab from "./components/tab/tab";
-  import goods from "./components/goods";
-  import ratings from "./components/ratings/ratings";
-  import sellers from './components/router/router_2';
+  import tab from "components/tab/tab";
+  import goods from "components/goods/goods";
+  import ratings from "components/ratings/ratings";
+  import sellers from 'components/router/router_2';
 
   import {getSeller} from "./model/api";
   import qs from 'query-string';
@@ -79,6 +81,12 @@
 <style scoped type="text/stylus" lang="stylus">
 
   @import './common/styl/mlxin.styl'
+  .tab-wrapper
+    position: fixed
+    top 136px;
+    right: 0
+    left: 0
+    bottom: 0
 
   .top
       display: flex

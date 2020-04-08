@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ratings from "../components/ratings/ratings";
 import router2 from '../components/router/router_2';
-import good from "@/components/goods";
+import good from "@/components/goods/goods";
 // import Admin from '../components/router/admin_0';
 
 const User = {

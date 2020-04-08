@@ -3,8 +3,8 @@
         <cube-tab-bar show-slider v-model="selectedLabel" :data="tabs" :useTransition="false" ref="tabbar"></cube-tab-bar>
         <div class="slide-wrapper">
             <cube-slide ref="slide" :data="tabs" :initial-index="index" :show-dots="false" @change="changePage" :loop="false" :auto-play="false" :options="slideOptions" @scroll="scroll">
-                <cube-slide-item v-for="(tab, indexItem) in tabs" :key="tab.id">
-                    <component :is="tab.component" :data="tab.data" ref="component" v-show="index === indexItem"></component>
+                <cube-slide-item v-for="(tab, indexItem) in tabs" :key="indexItem">
+                    <component :is="tab.component" :data="tab.data" ref="component"></component>
                 </cube-slide-item>
             </cube-slide>
         </div>
@@ -78,19 +78,19 @@
     }
 </script>
 
-<style scoped type="text/stylus">
-  .tab {
+<style scoped type="text/stylus" lang="stylus">
+  .tab
     display: flex;
     flex-direction: column;
     height: 100%;
 
-    >>> .cube-tab {
+    >>> .cube-tab
       padding: 10px 0;
-    }
 
-    .slide-wrapper {
+
+    .slide-wrapper
       flex: 1;
       overflow: hidden;
-    }
-  }
+
+
 </style>
