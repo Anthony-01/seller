@@ -42,9 +42,9 @@
 <!--      </div>-->
 
       <div class="scroll-nav-wrapper">
-          <cube-scroll-nav :side="true" :data="goods" v-if="goods.length" :options="scrollOptions">
+          <cube-scroll-nav :side="true" :data="goods" v-if="goods.length" :options="scrollOptions" >
               <template slot="bar" slot-scope="props">
-                  <cube-scroll-nav-bar direction="vertical" :label="props.labels" :txts="barTxts" :current="props.current">
+                  <cube-scroll-nav-bar direction="vertical" :labels="props.labels" :txts="barTxts" :current="props.current " >
                       <template slot-scope="props">
                           <div class="text">
                               <span>{{props.txt.name}}</span>
@@ -58,7 +58,7 @@
               </template>
               <cube-scroll-nav-panel v-for="good in goods" :key="good.name" :label="good.name" :title="good.name">
                   <ul>
-                      <li v-for="food in good.foods" :key="food.name" class="food-item" @click="selectFood(food)">
+                      <li v-for="food in good.foods" :key="food.name" class="food-item border-bottom-1px" @click="selectFood(food)">
                           <div class="icon">
                               <img :src="food.icon" width="57" height="57">
                           </div>
@@ -92,7 +92,7 @@
 <script>
   const ERR_OK = 0;
   import BScroll from 'better-scroll'
-  import ShopCart from 'components/shopCart'
+  import ShopCart from 'components/shopCart/shopCart'
   import cartControl from 'components/cartControl'
   import food from 'components/food/food'
   import {getGoods} from "../../model/api";
@@ -146,6 +146,9 @@
       }
     },
     computed: {
+      seller() {
+        return this.data.seller;
+      },
       selectedFoods() {
         let foods = [];
         this.goods.forEach(good => {
@@ -188,7 +191,7 @@
       }
     },
     props: {
-      seller: {
+      data: {
         type: Object,
         default() {
           return {}

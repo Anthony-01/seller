@@ -20,19 +20,36 @@
                   </div>
                   <div class="delivery-wrapper">
                     <span class="title">送达时间</span>
-                    <span class="delivery">{{seller.deliveryTime}}</span>
+                    <span class="delivery">{{seller.deliveryTime}}min</span>
                   </div>
               </div>
           </div>
           <split></split>
-          <!--:selectType="selectType" :onlyContent="onlyContent"-->
           <ratingselect :ratings="ratings"  :selectType="selectType" :onlyContent="onlyContent" @select="onSelect" @toggle="onToggle"></ratingselect>
           <div class="rating-wrapper" v-show="computedRatings.length">
               <ul>
-                  <li class="rating-item border-bottom-1px" v-for="(item, index) in computedRatings">
+                  <li class="rating-item border-bottom-1px" v-for="(rating, index) in computedRatings" :key="index">
                       <div class="avatar">
-                        <img :src="item.avatar" width="28" height="28">
+                        <img :src="rating.avatar" width="28" height="28">
                       </div>
+                      <div class="content">
+                          <h1 class="name">{{rating.username}}</h1>
+                          <div class="star-wrapper">
+                              <star :size="24" :score="rating.score"></star>
+                              <span class="delivery">{{rating.deliveryTime}}</span>
+                          </div>
+                          <p class="text">{{rating.text}}</p>
+                          <div class="recommend" v-show="rating.recommend && rating.recommend.length">
+                              <span class="icon-thumb_up"></span>
+                              <span class="item" v-for="(item, index) in rating.recommend" :key="index">
+                                  {{item}}
+                              </span>
+                          </div>
+                          <div class="time">
+                              {{format(rating.rateTime)}}
+                          </div>
+                      </div>
+
                   </li>
               </ul>
           </div>
@@ -45,7 +62,9 @@
   import split from "../split/split";
   import ratingselect from "../ratingselect/ratingselect";
   import ratingMixin from '../../common/mixins/ratings'
-  import {getGoods} from "../../model/api";
+  import {getGoods, getRatings} from "../../model/api";
+
+  import moment from 'moment';
     export default {
         name: "ratings",
         mixins: [ratingMixin],
@@ -59,25 +78,34 @@
             }
         },
         props: {
-            seller: {
+            data: {
                 type: Object,
                 default() {
                   return {}
                 }
             }
         },
-        computed: {},
+        computed: {
+            seller() {
+                return this.data.seller;
+            }
+        },
         methods: {
+          format(time) {
+            return moment(time).format('YYYY-MM-DD hh:mm')
+          },
           async getGoods() {
             try {
               // 防止在点击tab切换的时候返回重新请求数据(只请求一次就行)
               if (!this.fetched) {
                 this.fetched = true
-                let res = await getGoods({
+                let res = await getRatings({
                   id: this.seller.id
                 })
+                console.log(res);
                 if (res.errno === 0) {
-                  this.goods = res.data
+
+                  this.ratings = res.data
                 }
               }
             } catch (error) {
@@ -189,5 +217,86 @@
                 }
               }
             }
+
+
+          .rating-wrapper
+              padding 0 18px;
+              .rating-item
+                  display flex;
+                  padding 18px 0;
+
+                  &:last-child
+                    border-none();
+
+                  .avatar
+                      felx 0 0 28px;
+                      width: 28px
+                      margin-right 12px;
+
+                      img
+                        height auto;
+                        border-radius 50%;
+
+                  .content
+                      position: relative;
+                      flex: 1;
+
+                      .name
+                          margin-bottom: 4px;
+                          line-height: 12px;
+                          font-size: $fontsize-small-s;
+                          color: $color-dark-grey;
+
+                      .star-wrapper
+                          margin-bottom 6px;
+                          display: flex;
+                          align-items: center;
+
+                          .star
+                              margin-right: 6px;
+                          .delivery
+                              font-size: $fontsize-small-s;
+                              color: $color-light-grey;
+
+                      .text {
+                          margin-bottom: 8px;
+                          line-height 18px;
+                          color: $color-dark-grey;
+                          font-size: $fontsize-small;
+                      }
+
+                      .recommend {
+                          display flex;
+                          align-items: center;
+                          flex-wrap: wrap;
+                          line-height: 16px;
+
+                          .icon-thumb, .item {
+                              margin 0 8px 4px 0;
+                              font-size: $fontsize-small-s;
+                          }
+
+                          .icon-thumb_up {
+                              color: $color-blue;
+                          }
+
+                          .item {
+                              padding: 0 6px;
+                              border: 1px solid $color-row-line;
+                              border-radius: 1px;
+                              color: $color-light-grey;
+                              backgroun: $color-white;
+                          }
+                      }
+
+                      .time {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        line-height: 12px;
+                        font-size: $fontsize-small;
+                        color: $color-light-grey;
+                      }
+
 
 </style>

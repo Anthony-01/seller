@@ -8,7 +8,7 @@ export default {
   },
   computed: {
     computedRatings() {
-      let ret = []
+      let ret = [];
       this.ratings.forEach((rating) => {
         if (this.onlyContent && !rating.text) {
           return
@@ -16,7 +16,8 @@ export default {
         if (this.selectType === ALL || rating.rateType === this.selectType) {
           ret.push(rating)
         }
-      })
+      });
+      console.log(ret);
       return ret
     }
   },

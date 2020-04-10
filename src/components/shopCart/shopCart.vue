@@ -232,9 +232,9 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-  @import "../common/styl/mlxin.styl"
+  @import "../../common/styl/mlxin.styl"
   .shopCart
-    position: fixed;
+    position: absolute;
     left: 0
     bottom: 0
     z-index: 50

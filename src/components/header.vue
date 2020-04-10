@@ -100,7 +100,7 @@
 </script>
 
 <style scoped lang="stylus" type="text/stylus">
-  @import "../common/styl/mlxin.styl"
+  @import "~common/styl/mlxin.styl"
   @import "../common/styl/style.css"
 
   .clearFix   //清除浮动

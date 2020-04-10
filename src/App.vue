@@ -20,7 +20,7 @@
   import tab from "components/tab/tab";
   import goods from "components/goods/goods";
   import ratings from "components/ratings/ratings";
-  import sellers from 'components/router/router_2';
+  import seller from 'components/seller/seller';
 
   import {getSeller} from "./model/api";
   import qs from 'query-string';
@@ -29,11 +29,7 @@
 
   export default {
     created() {
-      console.log(location.search);
-      console.log(qs.parse(location.search).id);
-      this.$http.get('/api/seller').then((data) => {
-        this.seller = data.body.data;
-      })
+      this._getSeller()
     },
     computed: {
       tabs() {
@@ -42,7 +38,7 @@
         }, {
           label: '评分', component: ratings, data: { seller: this.seller, id: 2 }
         }, {
-          label: '商家', component: sellers, data: { seller: this.seller, id: 3 }
+          label: '商家', component: seller, data: { seller: this.seller, id: 3 }
         }]
       }
     },

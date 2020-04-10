@@ -3,11 +3,11 @@
     <div class="ratingselect">
 
       <div class="select">
-        <span @click="selectSpan(2, $event)" class="block positive" :class="{active: localSelectedType===2}">{{desc.all}}<span class="text">{{ratings.length}}</span></span>
-        <span @click="selectSpan(0, $event)" class="block positive" :class="{active: localSelectedType===0}">{{desc.positive}}<span class="text">{{positive.length}}</span></span>
-        <span @click="selectSpan(1, $event)" class="block negative" :class="{active: localSelectedType===1}">{{desc.negative}}<span class="text">{{negative.length}}</span></span>
+        <span @click="selectSpan(2, $event)" class="block positive" :class="{'active': selectType === 2}">{{desc.all}}<span class="text">{{ratings.length}}</span></span>
+        <span @click="selectSpan(0, $event)" class="block positive" :class="{'active': selectType === 0}">{{desc.positive}}<span class="text">{{positive.length}}</span></span>
+        <span @click="selectSpan(1, $event)" class="block negative" :class="{'active': selectType === 1}">{{desc.negative}}<span class="text">{{negative.length}}</span></span>
       </div>
-      <div @click="toggleContent" class="only" :class="{on: localToggle}">
+      <div @click="toggleContent" class="only" :class="{on: onlyContent}">
         <span  class="icon-check_circle" ></span>
         <span class="text">只显示有内容的评价</span>
       </div>
@@ -18,16 +18,11 @@
   const POSITIVE = 0;
   const NEGATIVE = 1;
   const ALL = 2;
-
+  const EVENT_TOGGLE = 'toggle'
+  const EVENT_SELECT = 'select'
 
   export default {
     //如何将外部传入的参数作为局部变量
-    data() {
-      return {
-        localSelectedType: this.selectedType,
-        localToggle: this.onlyContent
-      }
-    },
     props: {
       desc: {
         type: Object,
@@ -39,7 +34,7 @@
           }
         }
       },
-      selectedType: {
+      selectType: {
         type: Number,
         default: ALL
       },
@@ -56,12 +51,15 @@
     },
     methods: {
       selectSpan(type, event) {
-        event.stopPropagation();
-        this.localSelectedType = type
+        // event.stopPropagation();
+        // this.localSelectedType = type
+        this.$emit(EVENT_SELECT, type)
+
       },
       toggleContent(event) {
-        event.stopPropagation();
-        this.localToggle = !this.localToggle;
+        // event.stopPropagation();
+        // this.localToggle = !this.localToggle;
+        this.$emit(EVENT_TOGGLE)
       }
     },
     computed: {
@@ -80,7 +78,7 @@
 </script>
 
 <style type="text/stylus" lang="stylus">
-  @import "../../common/styl/mlxin.styl"
+  @import "~common/styl/mlxin.styl"
 
   .ratingselect
     padding-top: 18px;
